@@ -1,4 +1,5 @@
 class User < ApplicationRecord
+	has_many :assignments, dependent: :destroy
 	has_many :todos, through: :assignments
 
   validates :name, presence: true

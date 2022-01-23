@@ -25,8 +25,10 @@ class TagsController < ApplicationController
 
     respond_to do |format|
       if @tag.save
-        format.html { redirect_to tag_url(@tag), notice: "Tag was successfully created." }
-        format.json { render :show, status: :created, location: @tag }
+        render json: {
+          status: 200,
+          tag: @tag
+        }
       else
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @tag.errors, status: :unprocessable_entity }
@@ -65,6 +67,6 @@ class TagsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def tag_params
-      params.require(:tag).permit(:user_id, :name)
+      params.require(:tag).permit(:name)
     end
 end

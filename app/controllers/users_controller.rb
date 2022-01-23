@@ -7,7 +7,7 @@ class UsersController < ApplicationController
     if @users
       render json: {
         users: @users
-      }
+      }, include: ['todos']
     else
       render json: {
         status: 500,
