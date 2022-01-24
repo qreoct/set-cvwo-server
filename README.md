@@ -1,24 +1,15 @@
-# README
+# SET - Task Management with Team Spirit
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+SET your sights on productivity.
 
-Things you may want to cover:
+SET *revolutionizes task management* and *electrifies team spirit*.
 
-* Ruby version
+It is a **task management web-application** targeted at **teams who aim to be productive together**.
 
-* System dependencies
+Ready? [Get SET](https://set-cvwo.herokuapp.com/)
 
-* Configuration
+## Learning notes
 
-* Database creation
+Check out my [learning notes and development log](https://docs.google.com/document/d/1LSkzmuELoEUR9OamS6IA2vcOzOts8ildeN2QDfLCPMY/edit?usp=sharing).
 
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+Frontend [client repo](https://github.com/qreoct/set-cvwo-client) (written in React + Typescript).
