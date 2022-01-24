@@ -6,13 +6,34 @@ class TodosController < ApplicationController
     render json: @todos, include: ['tags', 'users']
   end
 
+  # POST /todos
+  # TODO: this is the UGLIEST controller function ever...
+  # i absolutely must learn how to finesse multiple associations... eventually
   def create
-    @todo = Todo.new(todo_params)
-    if @todo.save 
+    hash = {}
+    hash[:id] = params[:props][:todo][:id]
+    hash[:title] = params[:props][:todo][:title]
+    hash[:done] = params[:props][:todo][:done]
+    hash[:deadline] = params[:props][:todo][:deadline]
+    hash[:notes] = params[:props][:todo][:notes]
+    @todo = Todo.new(hash)
+    @todo.save!
+    params[:props][:todo][:tags].map do |t|
+      user = User.find(params[:props][:currentUser][:id])
+      tag = Tag.find_or_create_by!(name: t[:name], user: user)
+      @todo.taggings.create(tag: tag)
+    end
+
+    params[:props][:todo][:users].map do |u|
+      user = User.find_by(id: u[:id])
+      user.assignments.create(todo: @todo)
+    end
+
+    if @todo 
       render json: {
         status: 200,
-        todo: @todo
-      }
+        todo: @todo,
+      }, :include => { :tags => [:tags], :users => [:users] }
     else 
       render json: {
         status: 400,
@@ -26,11 +47,11 @@ class TodosController < ApplicationController
     render json: @todo
   end
 
-  # PUT /users/1 or /users/1.json
-  # update only defined for 'notes' field
+  # PUT /todos/1 or /todos/1.json
+  # update only defined for 'notes' and 'completed'
   def update
     @todo = Todo.find(params[:id])
-      if @todo.update_attribute(:notes, params[:todo][:notes])
+      if @todo.update(:notes => params[:todo][:notes], :done => params[:todo][:done])
         render json: {
           status: 200
         }
@@ -56,17 +77,12 @@ class TodosController < ApplicationController
 
 private
   # Use callbacks to share common setup or constraints between actions.
-  def set_tag
-    @todo = Todo.find(params[:id])
-    @tag = Tag.find(@todo.id)
-  end
-
   def set_todo
     @todo = Todo.find(params[:id])
   end
 
-  # Only allow a list of trusted parameters through.
   def todo_params
-    params.require(:todo).permit(:title, :done)
+    params.require(:todo).permit(:id, :title, :done,
+      :deadline, :notes, :users => [:id, :name, :username, :created_at, :updated_at, :todos], :tags => [:name])
   end
 end

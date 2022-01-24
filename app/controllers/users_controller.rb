@@ -5,9 +5,7 @@ class UsersController < ApplicationController
   def index
     @users = User.all
     if @users
-      render json: {
-        users: @users
-      }, include: ['todos']
+      render json: @users, include: ['todos']
     else
       render json: {
         status: 500,
