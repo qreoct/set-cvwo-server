@@ -8,7 +8,7 @@ Rails.application.config.middleware.insert_before 0, Rack::Cors do
       credentials: true
   end
   allow do
-    origins 'https://set-cvwo.herokuapp.com/'
+    origins 'https://set-cvwo.herokuapp.com'
   
     resource '*',
       headers: :any,
