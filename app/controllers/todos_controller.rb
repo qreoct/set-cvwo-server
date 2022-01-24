@@ -33,11 +33,11 @@ class TodosController < ApplicationController
       render json: {
         status: 200,
         todo: @todo,
-      }, :include => { :tags => [:tags], :users => [:users] }
+      }, :include => ['tags', 'users']
     else 
       render json: {
         status: 400,
-        errors: ['Invalid todo']
+        errors: ['Unable to create todo']
       }
     end
   end
